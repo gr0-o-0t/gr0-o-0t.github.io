@@ -1,0 +1,24 @@
+{{- /*
+  CVSS severity pill; hue and label derived from the base score.
+    {{< severity 9.8 >}}
+    {{< severity score="6.1" label="Medium" >}}
+*/ -}}
+{{- $raw := .Get 0 | default (.Get "score") -}}
+{{- if not $raw -}}
+  {{- errorf "severity shortcode: missing score (%s)" .Position -}}
+{{- end -}}
+{{- $score := float $raw -}}
+{{- $label := "" -}}{{- $hue := "" -}}
+{{- if ge $score 9.0 -}}
+  {{- $label = "Critical" -}}{{- $hue = "#f43f5e" -}}
+{{- else if ge $score 7.0 -}}
+  {{- $label = "High" -}}{{- $hue = "#fb923c" -}}
+{{- else if ge $score 4.0 -}}
+  {{- $label = "Medium" -}}{{- $hue = "#fbbf24" -}}
+{{- else if gt $score 0.0 -}}
+  {{- $label = "Low" -}}{{- $hue = "#38bdf8" -}}
+{{- else -}}
+  {{- $label = "None" -}}{{- $hue = "#8b8b96" -}}
+{{- end -}}
+{{- $label = .Get "label" | default $label -}}
+<span class="severity-pill" style="--sev: {{ $hue }}">{{ $score }}<span class="severity-label">{{ $label }}</span></span>

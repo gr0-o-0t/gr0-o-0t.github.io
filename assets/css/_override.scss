@@ -1,0 +1,121 @@
+// ==============================
+// OLED override layer
+//
+// style.scss imports _variables -> _override -> _core/variables, and every
+// theme variable is declared !default, so redefining here wins without
+// touching themes/LoveIt. Light theme is left stock; only the dark
+// (`body[theme=dark]`) side is retuned for true-black panels.
+// ==============================
+
+$global-font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Emoji, Helvetica, Arial, sans-serif;
+$code-font-family: "JetBrains Mono", "Source Code Pro", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+// ---- surfaces ----
+$global-background-color-dark: #000;          // true OLED, pixels off
+$global-font-color-dark: #e6e6ea;
+$global-font-secondary-color-dark: #8b8b96;
+$global-border-color-dark: #1c1c22;
+
+$global-link-color-dark: #e6e6ea;
+$global-link-hover-color-dark: #22d3ee;
+
+$header-background-color-dark: #000;
+$header-hover-color-dark: #22d3ee;
+$search-background-color-dark: #131316;
+
+$selection-color-dark: rgba(34, 211, 238, .28);
+$scrollbar-color: #2a2a33;
+$scrollbar-hover-color: #3d3d49;
+
+// ---- content ----
+$single-link-color-dark: #22d3ee;
+$single-link-hover-color-dark: #67e8f9;
+$table-background-color-dark: #0b0b0d;
+$table-thead-color-dark: #131316;
+$blockquote-color-dark: #22d3ee;
+
+$pagination-link-color-dark: #8b8b96;
+$pagination-link-hover-color-dark: #22d3ee;
+
+// ---- code ----
+$code-color-dark: #f472b6;                    // inline `code`
+$code-background-color-dark: #0b0b0d;
+$code-info-color-dark: #6f6f7c;
+
+// Full remap: the stock dark map is tuned for a #292a2d panel and every hue
+// in it loses contrast against #000. Values below hold >= 4.5:1 on black.
+$code-highlight-color-map-dark: (
+  /* Parentheses */ "p": #8b8b96,
+  /* Keyword */ "k": #c084fc,
+  /* KeywordConstant */ "kc": #c084fc,
+  /* KeywordDeclaration */ "kd": #c084fc,
+  /* KeywordNamespace */ "kn": #c084fc,
+  /* KeywordPseudo */ "kp": #c084fc,
+  /* KeywordReserved */ "kr": #c084fc,
+  /* KeywordType */ "kt": #5eead4,
+  /* Name */ "n": #d4d4dc,
+  /* NameAttribute */ "na": #7dd3fc,
+  /* NameBuiltin */ "nb": #22d3ee,
+  /* NameBuiltinPseudo */ "bp": #22d3ee,
+  /* NameClass */ "nc": #fbbf24,
+  /* NameConstant */ "no": #fbbf24,
+  /* NameDecorator */ "nd": #fbbf24,
+  /* NameEntity */ "ni": #7dd3fc,
+  /* NameException */ "ne": #f87171,
+  /* NameFunction */ "nf": #38bdf8,
+  /* NameFunctionMagic */ "fm": #22d3ee,
+  /* NameLabel */ "nl": #7dd3fc,
+  /* NameNamespace */ "nn": #7dd3fc,
+  /* NameOther */ "nx": #d4d4dc,
+  /* NameProperty */ "py": #7dd3fc,
+  /* NameTag */ "nt": #38bdf8,
+  /* NameVariable */ "nv": #7dd3fc,
+  /* NameVariableClass */ "vc": #7dd3fc,
+  /* NameVariableGlobal */ "vg": #7dd3fc,
+  /* NameVariableInstance */ "vi": #7dd3fc,
+  /* NameVariableMagic */ "vm": #7dd3fc,
+  /* Literal */ "l": #4ade80,
+  /* LiteralDate */ "ld": #4ade80,
+  /* LiteralString */ "s": #4ade80,
+  /* LiteralStringAffix */ "sa": #4ade80,
+  /* LiteralStringBacktick */ "sb": #4ade80,
+  /* LiteralStringChar */ "sc": #4ade80,
+  /* LiteralStringDelimiter */ "dl": #4ade80,
+  /* LiteralStringDoc */ "sd": #4ade80,
+  /* LiteralStringDouble */ "s2": #4ade80,
+  /* LiteralStringEscape */ "se": #fb923c,
+  /* LiteralStringHeredoc */ "sh": #4ade80,
+  /* LiteralStringInterpol */ "si": #fb923c,
+  /* LiteralStringOther */ "sx": #4ade80,
+  /* LiteralStringRegex */ "sr": #fb7185,
+  /* LiteralStringSingle */ "s1": #4ade80,
+  /* LiteralStringSymbol */ "ss": #4ade80,
+  /* LiteralNumber */ "m": #fb923c,
+  /* LiteralNumberBin */ "mb": #fb923c,
+  /* LiteralNumberFloat */ "mf": #fb923c,
+  /* LiteralNumberHex */ "mh": #fb923c,
+  /* LiteralNumberInteger */ "mi": #fb923c,
+  /* LiteralNumberIntegerLong */ "il": #fb923c,
+  /* LiteralNumberOct */ "mo": #fb923c,
+  /* Operator */ "o": #f472b6,
+  /* OperatorWord */ "ow": #c084fc,
+  /* Comment */ "c": #7a7a88,
+  /* CommentHashbang */ "ch": #7a7a88,
+  /* CommentMultiline */ "cm": #7a7a88,
+  /* CommentSingle */ "c1": #7a7a88,
+  /* CommentSpecial */ "cs": #a78bfa,
+  /* CommentPreproc */ "cp": #a78bfa,
+  /* CommentPreprocFile */ "cpf": #a78bfa,
+  /* Generic */ "g": #d4d4dc,
+  /* GenericDeleted */ "gd": #f87171,
+  /* GenericEmph */ "ge": #d4d4dc,
+  /* GenericError */ "gr": #f87171,
+  /* GenericHeading */ "gh": #fbbf24,
+  /* GenericInserted */ "gi": #4ade80,
+  /* GenericOutput */ "go": #8b8b96,
+  /* GenericPrompt */ "gp": #22d3ee,
+  /* GenericStrong */ "gs": #e6e6ea,
+  /* GenericSubheading */ "gu": #fbbf24,
+  /* GenericTraceback */ "gt": #f87171,
+  /* TextWhitespace */ "w": #2a2a33,
+);

@@ -1,0 +1,369 @@
+// ==============================
+// Custom layer — the "colorful" half of the design.
+//
+// Rule: colour only where it carries meaning (topic, severity, diff state).
+// Everything structural stays greyscale so the page reads professional.
+// ==============================
+
+// Topic hues. Keys are the category slugs Hugo generates under /categories/.
+$topics: (
+  "ctf":        #4ade80,
+  "bugbounty":  #fbbf24,
+  "cve":        #f87171,
+  "research":   #38bdf8,
+  "politics":   #c084fc,
+  "philosophy": #fb7185,
+);
+
+$accent: #22d3ee;
+$surface-1: #0b0b0d;
+$surface-2: #131316;
+$hairline: #1c1c22;
+
+:root {
+  --accent: #{$accent};
+  --surface-1: #{$surface-1};
+  --surface-2: #{$surface-2};
+  --hairline: #{$hairline};
+  @each $name, $hue in $topics {
+    --topic-#{$name}: #{$hue};
+  }
+}
+
+// ---------------------------------------------------------------- typography
+[theme=dark] {
+  .single-title,
+  .single-subtitle,
+  h1, h2, h3, h4 {
+    letter-spacing: -.015em;
+  }
+
+  .content {
+    h2, h3 {
+      // Accent rail on section headings — cheap structure cue while scanning
+      // a long writeup.
+      padding-left: .75rem;
+      border-left: 2px solid var(--accent);
+    }
+    h3 { border-left-color: #2a2a33; }
+  }
+}
+
+// ---------------------------------------------------------------- post cards
+[theme=dark] .page.home .summary,
+[theme=dark] .page .summary {
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline);
+  border-left: 2px solid #2a2a33;
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  transition: border-color .18s ease, background-color .18s ease;
+
+  &:hover {
+    background-color: var(--surface-2);
+    border-color: #2a2a33;
+  }
+
+  .single-title { margin-top: .25rem; }
+}
+
+// ------------------------------------------------- topic colouring, no fork
+// The theme never stamps the category onto the article element, so instead of
+// forking summary.html we key off the category link it already renders.
+// :has() is baseline-supported; a browser without it just falls back to the
+// neutral grey rail above, which is a fine degradation.
+@each $name, $hue in $topics {
+  [theme=dark] .summary:has(.post-category a[href*="/categories/#{$name}/"]) {
+    border-left-color: $hue;
+
+    &:hover { border-color: rgba($hue, .35); }
+  }
+
+  // Category + tag links themselves, everywhere they appear.
+  [theme=dark] a[href*="/categories/#{$name}/"] {
+    color: $hue;
+
+    &:hover { color: lighten($hue, 12%); }
+  }
+}
+
+// ---------------------------------------------------------------- tag pills
+[theme=dark] .post-tags a,
+[theme=dark] .post-footer .post-tags a {
+  display: inline-block;
+  padding: .05rem .5rem;
+  margin: .1rem .15rem;
+  font-size: .8rem;
+  color: #8b8b96;
+  background-color: var(--surface-2);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  transition: color .15s ease, border-color .15s ease;
+
+  &:hover {
+    color: var(--accent);
+    border-color: rgba(34, 211, 238, .4);
+  }
+}
+
+// ---------------------------------------------------------------- code
+[theme=dark] {
+  .highlight,
+  .code-block {
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+  }
+
+  .code-header {
+    background-color: var(--surface-2);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  // Line numbers should recede, not compete with the code.
+  .highlight .lnt { color: #3a3a45; }
+
+  // Chroma's line-highlight band, used by {{< highlight ... "hl_lines=..." >}}
+  .highlight .hl { background-color: rgba(34, 211, 238, .09); }
+
+  code:not(.highlight code) {
+    padding: .1rem .3rem;
+    border-radius: 3px;
+    background-color: var(--surface-1);
+    border: 1px solid var(--hairline);
+  }
+}
+
+// ---------------------------------------------------------------- chrome
+[theme=dark] {
+  .header-wrapper,
+  #header-desktop,
+  #header-mobile {
+    border-bottom: 1px solid var(--hairline);
+    backdrop-filter: blur(8px);
+  }
+
+  #search-dropdown-desktop,
+  #search-dropdown-mobile {
+    background-color: var(--surface-1);
+    border: 1px solid var(--hairline);
+  }
+
+  .toc {
+    background-color: var(--surface-1);
+    border: 1px solid var(--hairline);
+    border-radius: 6px;
+
+    .toc-content a.active { color: var(--accent); }
+  }
+
+  #fixed-buttons .fixed-button {
+    background-color: var(--surface-2);
+    border: 1px solid var(--hairline);
+  }
+
+  .footer { border-top: 1px solid var(--hairline); }
+
+  table {
+    border-collapse: collapse;
+    th, td { border: 1px solid var(--hairline); }
+  }
+
+  blockquote { background-color: var(--surface-1); }
+}
+
+// ==============================
+// Shortcode styles
+// ==============================
+
+// {{< cve id="CVE-2024-1234" >}}
+[theme=dark] .cve-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .1rem .5rem;
+  font-family: var(--code-font-family);
+  font-size: .85rem;
+  color: var(--topic-cve);
+  background-color: rgba(248, 113, 113, .08);
+  border: 1px solid rgba(248, 113, 113, .3);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+// {{< severity score="9.8" >}} — hue is picked in the shortcode, applied here.
+[theme=dark] .severity-pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .4rem;
+  padding: .1rem .55rem;
+  font-family: var(--code-font-family);
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--sev);
+  background-color: color-mix(in srgb, var(--sev) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--sev) 35%, transparent);
+  border-radius: 999px;
+
+  .severity-label {
+    font-weight: 400;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    opacity: .8;
+  }
+}
+
+// {{< scope >}} ... {{< /scope >}}
+[theme=dark] .scope-box {
+  margin: 1.25rem 0;
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline);
+  border-left: 2px solid var(--topic-bugbounty);
+  border-radius: 6px;
+
+  .scope-title {
+    padding: .5rem .9rem;
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--topic-bugbounty);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .scope-body {
+    padding: .3rem .9rem;
+    font-size: .92rem;
+
+    ul { margin: .5rem 0; }
+  }
+}
+
+// {{< timeline >}} 2024-01-05 | Reported {{< /timeline >}}
+[theme=dark] .timeline {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 1px solid var(--hairline);
+  list-style: none;
+
+  li {
+    position: relative;
+    padding: .1rem 0 .1rem 1.1rem;
+    font-size: .92rem;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: -1.36rem;
+      top: .62rem;
+      width: .45rem;
+      height: .45rem;
+      border-radius: 50%;
+      background-color: #2a2a33;
+    }
+
+    // Last entry is the resolution — mark it done.
+    &:last-child::before { background-color: var(--topic-ctf); }
+  }
+
+  .timeline-date {
+    display: inline-block;
+    min-width: 6.5rem;
+    font-family: var(--code-font-family);
+    font-size: .82rem;
+    color: var(--accent);
+  }
+}
+
+// {{< payload >}} ... {{< /payload >}}
+// Same shape as .scope-box on purpose. The label is a header row, not an
+// absolutely-positioned notch: the body needs `overflow-x: auto` for long
+// one-liners, and that creates a clipping context which ate the notch.
+[theme=dark] .payload {
+  margin: 1.25rem 0;
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline);
+  border-left: 2px solid #f0abfc;
+  border-radius: 6px;
+
+  .payload-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding: .45rem .9rem;
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: #f0abfc;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .payload-copy {
+    padding: 0 .2rem;
+    font-size: .85rem;
+    line-height: 1;
+    color: #6f6f7c;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color .15s ease;
+
+    &:hover { color: #f0abfc; }
+
+    // Set by the inline handler for ~1.2s after a successful copy.
+    &[data-copied] {
+      color: var(--topic-ctf);
+      &::after {
+        content: "copied";
+        margin-left: .35rem;
+        font-size: .68rem;
+        letter-spacing: .06em;
+      }
+    }
+  }
+
+  .payload-body {
+    margin: 0;
+    padding: .75rem .9rem;
+    font-family: var(--code-font-family);
+    font-size: .85rem;
+    color: #f5d0fe;
+    background: none;
+    border: none;
+    overflow-x: auto;
+    tab-size: 2;
+  }
+}
+
+// ---------------------------------------------------------------- series nav
+[theme=dark] .series-nav {
+  margin: 1.5rem 0;
+  background-color: var(--surface-1);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  padding: .9rem 1.1rem;
+
+  .series-nav-title {
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #8b8b96;
+    margin-bottom: .5rem;
+  }
+
+  ol {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: .92rem;
+  }
+
+  li.current {
+    color: var(--accent);
+    list-style-type: disc;
+
+    &::marker { color: var(--accent); }
+  }
+}

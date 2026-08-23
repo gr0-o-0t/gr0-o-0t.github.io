@@ -1,0 +1,18 @@
+{{- /*
+  Verbatim payload block: no syntax highlighting, no markdown, nothing
+  swallowed. Use for request bodies, injection strings, shellcode.
+    {{< payload >}}
+    ' UNION SELECT NULL,version()-- -
+    {{< /payload >}}
+    {{< payload title="Final request" >}}...{{< /payload >}}
+*/ -}}
+<div class="payload">
+  <div class="payload-title">
+    <span>{{ .Get "title" | default (.Get 0) | default "Payload" }}</span>
+    <button type="button" class="payload-copy" aria-label="Copy payload"
+      onclick="navigator.clipboard.writeText(this.closest('.payload').querySelector('pre').innerText).then(()=>{this.dataset.copied=1;setTimeout(()=>delete this.dataset.copied,1200)})">
+      <i class="far fa-copy" aria-hidden="true"></i>
+    </button>
+  </div>
+  <pre class="payload-body">{{ trim .Inner "\n\r" | htmlEscape | safeHTML }}</pre>
+</div>

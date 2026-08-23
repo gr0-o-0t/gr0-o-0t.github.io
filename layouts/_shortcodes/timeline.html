@@ -1,0 +1,23 @@
+{{- /*
+  Disclosure timeline. One entry per line: `date | what happened`.
+  The last entry is styled as the resolution.
+    {{< timeline >}}
+    2026-01-04 | Reported to vendor
+    2026-02-11 | Patch released in 3.2.1
+    {{< /timeline >}}
+*/ -}}
+<ul class="timeline">
+{{- range (split (trim .Inner "\n\r \t") "\n") -}}
+  {{- $line := trim . " \t\r" -}}
+  {{- with $line -}}
+    {{- $parts := split $line "|" -}}
+    {{- if gt (len $parts) 1 -}}
+      {{- $date := trim (index $parts 0) " " -}}
+      {{- $text := trim (delimit (after 1 $parts) "|") " " -}}
+      <li><span class="timeline-date">{{ $date }}</span>{{ $.Page.RenderString $text }}</li>
+    {{- else -}}
+      <li>{{ $.Page.RenderString $line }}</li>
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+</ul>

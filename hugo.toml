@@ -1,95 +1,274 @@
-baseURL = "http://example.org/"
-
-
-# Change the default theme to be use when building the site with Hugo
-
+baseURL = "https://gr0-o-0t.github.io/"
 theme = "LoveIt"
 
-
-# website title
-
-title = "My New Hugo Site"
-
-
-# locale ["en", "zh-CN", "fr", "pl", ...]
-
+title = "gr0-o-0t"
+languageCode = "en"
 locale = "en"
-
-# language name ["English", "简体中文", "Français", "Polski", ...]
-
 languageName = "English"
+defaultContentLanguage = "en"
+hasCJKLanguage = false
 
-[caches]
-[caches.images]
-dir = ':cacheDir/images'
+enableRobotsTXT = true
+enableGitInfo = true
+enableEmoji = true
 
-# Menu config
+# LoveIt shortcodes reach for remote JSON / instagram tokens we don't use.
+ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
 
-[menu]
+# ---------------------------------------------------------------- taxonomies
+[taxonomies]
+  category = "categories"
+  tag      = "tags"
+  series   = "series"
 
-[[menu.main]]
+[permalinks]
+  writeups = "/writeups/:slugorfilename/"
+  thoughts = "/thoughts/:slugorfilename/"
 
-weight = 1
+[pagination]
+  pagerSize = 10
 
-identifier = "posts"
+# ---------------------------------------------------------------- outputs
+# JSON on the home page is the lunr search index.
+# MarkDown on pages powers the "read the raw source" link in the post footer.
+[outputs]
+  home     = ["HTML", "RSS", "JSON"]
+  page     = ["HTML", "MarkDown"]
+  section  = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term     = ["HTML", "RSS"]
 
-# you can add extra information before the name (HTML format is supported), such as icons
+[mediaTypes]
+  [mediaTypes."text/plain"]
+    suffixes = ["md"]
 
-pre = ""
+[outputFormats]
+  [outputFormats.MarkDown]
+    mediaType   = "text/plain"
+    isPlainText = true
+    isHTML      = false
 
-# you can add extra information after the name (HTML format is supported), such as icons
-
-post = ""
-
-name = "Posts"
-
-url = "/posts/"
-
-# title will be shown when you hover on this menu link
-
-title = ""
-
-[[menu.main]]
-
-weight = 2
-
-identifier = "tags"
-
-pre = ""
-
-post = ""
-
-name = "Tags"
-
-url = "/tags/"
-
-title = ""
-
-[[menu.main]]
-
-weight = 3
-
-identifier = "categories"
-
-pre = ""
-
-post = ""
-
-name = "Categories"
-
-url = "/categories/"
-
-title = ""
-
-
-# Markup related configuration in Hugo
-
+# ---------------------------------------------------------------- markup
 [markup]
+  [markup.highlight]
+    codeFences         = true
+    guessSyntax        = true
+    lineNos            = true
+    lineNumbersInTable = true
+    # Required by LoveIt: it ships its own class-based highlight theme.
+    noClasses          = false
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote       = true
+      linkify        = true
+      strikethrough  = true
+      table          = true
+      taskList       = true
+    [markup.goldmark.renderer]
+      # Needed for the raw HTML the custom shortcodes emit.
+      unsafe = true
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel   = 4
 
-# Syntax Highlighting (https://gohugo.io/content-management/syntax-highlighting)
+[sitemap]
+  changefreq = "weekly"
+  filename   = "sitemap.xml"
+  priority   = 0.5
 
-[markup.highlight]
+# ---------------------------------------------------------------- menu
+[menu]
+  [[menu.main]]
+    weight = 1
+    identifier = "writeups"
+    pre = "<i class='fas fa-terminal fa-fw'></i>"
+    name = "Writeups"
+    url = "/writeups/"
+    title = "CTF, bug bounty, CVEs, research"
+  [[menu.main]]
+    weight = 2
+    identifier = "thoughts"
+    pre = "<i class='fas fa-feather-alt fa-fw'></i>"
+    name = "Thoughts"
+    url = "/thoughts/"
+    title = "Politics, philosophy, everything else"
+  [[menu.main]]
+    weight = 3
+    identifier = "categories"
+    pre = "<i class='far fa-folder fa-fw'></i>"
+    name = "Categories"
+    url = "/categories/"
+  [[menu.main]]
+    weight = 4
+    identifier = "series"
+    pre = "<i class='fas fa-layer-group fa-fw'></i>"
+    name = "Series"
+    url = "/series/"
+  [[menu.main]]
+    weight = 5
+    identifier = "tags"
+    pre = "<i class='fas fa-tags fa-fw'></i>"
+    name = "Tags"
+    url = "/tags/"
+  [[menu.main]]
+    weight = 6
+    identifier = "about"
+    pre = "<i class='far fa-user fa-fw'></i>"
+    name = "About"
+    url = "/about/"
 
-# false is a necessary configuration (https://github.com/dillonzq/LoveIt/issues/158)
+# ---------------------------------------------------------------- params
+[params]
+  # OLED palette is dark-only by design; "auto" would serve the light theme
+  # to anyone whose OS prefers light, and the custom accents aren't tuned for it.
+  defaultTheme = "dark"
+  gitRepo = "https://github.com/gr0-o-0t/gr0-o-0t.github.io"
+  fingerprint = "sha256"
+  dateFormat = "2006-01-02"
+  title = "gr0-o-0t"
+  description = "Security research, CTF writeups, and the occasional argument."
+  images = ["/images/avatar.svg"]
 
-noClasses = false
+  [params.author]
+    name = "Md Abdullahil Kafi"
+    link = "https://github.com/gr0-o-0t"
+
+  [params.app]
+    title = "gr0-o-0t"
+    noFavicon = false
+    svgFavicon = "/images/avatar.svg"
+    themeColor = "#000000"
+    iconColor = "#22d3ee"
+    tileColor = "#000000"
+
+  [params.header]
+    desktopMode = "fixed"
+    mobileMode = "auto"
+    [params.header.title]
+      name = "gr0-o-0t"
+      pre = "<i class='fas fa-terminal'></i>"
+      typeit = false
+
+  [params.footer]
+    enable = true
+    hugo = false
+    copyright = true
+    author = true
+    since = 2026
+    license = '<a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a>'
+
+  [params.section]
+    paginate = 20
+    dateFormat = "01-02"
+    rss = 20
+
+  [params.list]
+    paginate = 20
+    dateFormat = "01-02"
+    rss = 20
+
+  [params.search]
+    enable = true
+    type = "lunr"
+    contentLength = 4000
+    placeholder = "Search writeups, CVEs, tags…"
+    maxResultLength = 10
+    snippetLength = 40
+    highlightTag = "em"
+    absoluteURL = false
+
+  [params.home]
+    rss = 20
+    [params.home.profile]
+      enable = true
+      avatarURL = "/images/avatar.svg"
+      title = "gr0-o-0t"
+      subtitle = "Security research, CTF writeups, and the occasional argument."
+      typeit = true
+      social = true
+      disclaimer = ""
+    [params.home.posts]
+      enable = true
+      paginate = 10
+
+  [params.social]
+    GitHub = "gr0-o-0t"
+    X = "groot_40"
+    Linkedin = "gr007"
+    RSS = true
+
+  [params.page]
+    hiddenFromHomePage = false
+    hiddenFromSearch = false
+    twemoji = false
+    lightgallery = true
+    ruby = true
+    fraction = true
+    fontawesome = true
+    linkToMarkdown = true
+    rssFullText = false
+
+    [params.page.toc]
+      enable = true
+      keepStatic = false
+      auto = true
+
+    [params.page.math]
+      enable = true
+      copyTex = true
+      mhchem = true
+
+    [params.page.code]
+      copy = true
+      maxShownLines = 40
+
+    [params.page.share]
+      enable = true
+      X = true
+      Linkedin = true
+      HackerNews = true
+      Reddit = true
+      Telegram = true
+      Facebook = false
+      Threads = false
+
+    [params.page.comment]
+      enable = true
+      # TODO: fill these from https://giscus.app after enabling
+      # Discussions on github.com/gr0-o-0t/gr0-o-0t.github.io.
+      # Until repoId/categoryId are set, giscus renders nothing (no error).
+      [params.page.comment.giscus]
+        enable = true
+        repo = "gr0-o-0t/gr0-o-0t.github.io"
+        repoId = ""
+        category = "Announcements"
+        categoryId = ""
+        mapping = "pathname"
+        reactionsEnabled = "1"
+        emitMetadata = "0"
+        inputPosition = "bottom"
+        lazyLoading = true
+        lightTheme = "dark"
+        darkTheme = "transparent_dark"
+
+    [params.page.seo]
+      [params.page.seo.publisher]
+        name = "gr0-o-0t"
+        logoUrl = "/images/avatar.svg"
+
+  [params.typeit]
+    speed = 60
+    cursorSpeed = 900
+    cursorChar = "_"
+    duration = -1
+
+  [params.analytics]
+    enable = false
+
+  [params.cookieconsent]
+    enable = false
+
+  [params.compatibility]
+    polyfill = false
+    objectFit = false

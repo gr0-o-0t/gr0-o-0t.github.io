@@ -1,0 +1,11 @@
+{{- /*
+  CVE badge, linked to NVD by default.
+    {{< cve "CVE-2024-3094" >}}
+    {{< cve id="CVE-2024-3094" link="https://example.com/advisory" >}}
+*/ -}}
+{{- $id := .Get 0 | default (.Get "id") -}}
+{{- if not $id -}}
+  {{- errorf "cve shortcode: missing id (%s)" .Position -}}
+{{- end -}}
+{{- $link := .Get "link" | default (printf "https://nvd.nist.gov/vuln/detail/%s" $id) -}}
+<a class="cve-badge" href="{{ $link }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-bug" aria-hidden="true"></i>{{ $id }}</a>

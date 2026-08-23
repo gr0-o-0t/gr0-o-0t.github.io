@@ -1,0 +1,27 @@
+{{- /*
+  Multi-part writeup navigation. Driven by the `series` taxonomy, so a post
+  joins one simply by adding `series = ["Name"]` to its front matter.
+  Ordered oldest-first: part 1 should read as part 1.
+*/ -}}
+{{- with .Params.series -}}
+  {{- range . -}}
+    {{- $term := $.Site.GetPage (printf "/series/%s" (urlize .)) -}}
+    {{- with $term -}}
+      {{- $siblings := .Pages.ByDate -}}
+      {{- if gt (len $siblings) 1 -}}
+        <nav class="series-nav">
+          <div class="series-nav-title">Series &middot; <a href="{{ .RelPermalink }}">{{ .Title }}</a></div>
+          <ol>
+            {{- range $siblings -}}
+              {{- if eq .RelPermalink $.RelPermalink -}}
+                <li class="current">{{ .Title | emojify }}</li>
+              {{- else -}}
+                <li><a href="{{ .RelPermalink }}">{{ .Title | emojify }}</a></li>
+              {{- end -}}
+            {{- end -}}
+          </ol>
+        </nav>
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

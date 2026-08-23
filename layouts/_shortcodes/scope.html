@@ -1,0 +1,11 @@
+{{- /*
+  Target / scope callout for bounty and CVE writeups.
+    {{< scope title="Target" >}}
+    - `*.example.com` (in scope)
+    - Rate limit: 20 rps
+    {{< /scope >}}
+*/ -}}
+<div class="scope-box">
+  <div class="scope-title">{{ .Get "title" | default (.Get 0) | default "Scope" }}</div>
+  <div class="scope-body">{{ .Page.RenderString (dict "display" "block") .Inner }}</div>
+</div>
